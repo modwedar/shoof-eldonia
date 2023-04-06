@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\http\controllers;
 
-use App\Models\Hotel;
-use Illuminate\Http\Request;
+use app\models\hotel;
+use illuminate\http\request;
 
-class HotelController extends Controller
+class hotelcontroller extends controller
 {
     public function index()
     {
-        $hotels = Hotel::all();
+        $hotels = hotel::all();
         return response()->json($hotels);
     }
 
-    public function searchHotels(Request $request)
+    public function searchhotels(request $request)
     {
-        $hotels = Hotel::query()
+        $hotels = hotel::query()
             ->where('location', $request->input('location'))
-            ->whereDoesntHave('bookings', function ($query) use ($request) {
-                $query->whereBetween('checkin_date', [$request->input('checkin_date'), $request->input('checkout_date')])
-                    ->orWhereBetween('checkout_date', [$request->input('checkin_date'), $request->input('checkout_date')]);
+            ->wheredoesnthave('bookings', function ($query) use ($request) {
+                $query->wherebetween('checkin_date', [$request->input('checkin_date'), $request->input('checkout_date')])
+                    ->orwherebetween('checkout_date', [$request->input('checkin_date'), $request->input('checkout_date')]);
             })
             ->get();
 
