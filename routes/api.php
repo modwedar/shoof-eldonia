@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //التسجيل عن طريق الAPI
 Route::post('register', [AuthController::class, 'register']);
 //تسجيل الدخول عن طريق الAPI
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::middleware('auth:api')->group(function () {
     //عرض كل الفنادق المتاحة
