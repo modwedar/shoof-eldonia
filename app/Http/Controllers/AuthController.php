@@ -27,7 +27,10 @@ class AuthController extends Controller
         $user->password = bcrypt($request->input('password'));
         $user->save();
 
-        $token = $user->createToken('MyApp')->accessToken;
+        $token = $user->createToken('MyApp')->plainTextToken;
+
+        $user->api_token = $token;
+        $user->save();
 
         return response()->json(['token' => $token], 200);
     }
@@ -38,11 +41,10 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('MyApp')->accessToken;
+            $token = $user->createToken('MyApp')->plainTextToken;
             return response()->json([
                 'token' => $token,
                 'token_type' => 'Bearer',
-                'expires_in' => auth('api')->factory()->getTTL() * 60
             ], 200)->header('Authorization', 'Bearer ' . $token);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
